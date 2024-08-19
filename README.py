@@ -1,4 +1,3 @@
-'''
 import openai
 
 # Set up your OpenAI API key and endpoint
@@ -25,4 +24,4 @@ while True:
         break
     response = chat_with_openai(user_input)
     print("AI:", response)
-'''
+
