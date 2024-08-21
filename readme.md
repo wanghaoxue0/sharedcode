@@ -91,3 +91,38 @@ python process_pdfs.py
 ```
 
 这个脚本将遍历指定文件夹中的所有PDF文件，提取它们的文本，向ChatGPT提问，并将答案保存到JSON文件中。
+
+
+
+
+
+### use langchain
+、、、
+
+from langchain.document_loaders import PyPDFLoader
+from langchain.chains.question_answering import load_qa_chain
+from langchain.llms import OpenAI
+from langchain.chains import AnalyzeDocumentChain
+
+# 加载PDF文件
+loader = PyPDFLoader('test_folder')  # 指定文件夹路径
+documents = loader.load()
+
+# 创建问答链
+llm = OpenAI(temperature=0, model="gpt-4-turbo")
+qa_chain = load_qa_chain(llm, chain_type="stuff")
+
+# 定义问题
+question = "你的问题"
+
+# 处理每个文档
+results = {}
+for doc in documents:
+    answer = qa_chain.run(input_document=doc, input_question=question)
+    results[doc.metadata['source']] = answer
+
+# 保存结果到JSON
+import json
+with open('results.json', 'w', encoding='utf-8') as json_file:
+    json.dump(results, json_file, ensure_ascii=False, indent=4)
+、、、
